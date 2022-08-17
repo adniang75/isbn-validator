@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.*;
 
 class StockManagementTests {
 
@@ -26,13 +26,33 @@ class StockManagementTests {
     @Test
     @DisplayName("Database Is Used If Data Is Present")
     void databaseIsUsedIfDataIsPresent() {
-        fail();
+        ExternalISBNDataService databaseService = mock(ExternalISBNDataService.class);
+        ExternalISBNDataService webService = mock(ExternalISBNDataService.class);
+        String isbn = "0140177396";
+        when(databaseService.lookup(isbn))
+                .thenReturn(new Book(isbn, "abc", "abc"));
+        StockManager stockManager = new StockManager();
+        stockManager.setWebService(webService);
+        stockManager.setDatabaseService(databaseService);
+        String locatorCode = stockManager.getLocatorCode(isbn);
+        verify(databaseService).lookup(isbn);
+        verify(webService, never()).lookup(anyString());
     }
 
     @Test
     @DisplayName("Webservice Is Used If Data Is Not Present In Database")
     void webserviceIsUsedIfDataIsNotPresentInDatabase() {
-        fail();
+        ExternalISBNDataService databaseService = mock(ExternalISBNDataService.class);
+        ExternalISBNDataService webService = mock(ExternalISBNDataService.class);
+        String isbn = "0140177396";
+        when(webService.lookup(isbn))
+                .thenReturn(new Book(isbn, "abc", "abc"));
+        StockManager stockManager = new StockManager();
+        stockManager.setWebService(webService);
+        stockManager.setDatabaseService(databaseService);
+        String locatorCode = stockManager.getLocatorCode(isbn);
+        verify(databaseService).lookup(anyString());
+        verify(webService).lookup(isbn);
     }
 
 }
