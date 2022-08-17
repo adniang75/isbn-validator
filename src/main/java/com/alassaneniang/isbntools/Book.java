@@ -2,17 +2,14 @@ package com.alassaneniang.isbntools;
 
 public class Book {
 
-    private String isbn;
-    private String title;
-    private String author;
+    private final String isbn;
+    private final String title;
+    private final String author;
 
     public Book(String isbn, String title, String author) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
-    }
-
-    public Book() {
     }
 
     public String getIsbn() {

@@ -20,7 +20,7 @@ public class StockManager {
         }
         StringBuilder locator = new StringBuilder();
         locator.append(isbn.substring(isbn.length() - 4));
-        locator.append(book.getAuthor().substring(0, 1));
+        locator.append(book.getAuthor().charAt(0));
         locator.append(book.getTitle().split(" ").length);
         return locator.toString();
     }
